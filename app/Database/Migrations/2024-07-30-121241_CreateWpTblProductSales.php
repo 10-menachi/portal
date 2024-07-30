@@ -47,6 +47,11 @@ class CreateWpTblProductSales extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
+            'isDelete' => [
+                'type' => 'TINYINT',
+                'constraint' => 1,
+                'default' => 0,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
