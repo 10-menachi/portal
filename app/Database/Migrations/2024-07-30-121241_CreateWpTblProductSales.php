@@ -49,8 +49,8 @@ class CreateWpTblProductSales extends Migration
             ],
             'isDelete' => [
                 'type' => 'TINYINT',
-                'constraint' => 1,
-                'default' => 0,
+                'constraint' => '1',
+                'default' => '0',
             ],
             'created_at' => [
                 'type' => 'DATETIME',

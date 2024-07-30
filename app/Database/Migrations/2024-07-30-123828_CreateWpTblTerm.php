@@ -20,6 +20,11 @@ class CreateWpTblTerm extends Migration
                 'constraint' => 200,
                 'null' => false,
             ],
+            'slug' => [
+                'type' => 'VARCHAR',
+                'constraint' => 200,
+                'null' => false,
+            ],
         ]);
         $this->forge->addKey('term_id', true);
         $this->forge->createTable('terms');

@@ -11,11 +11,22 @@ class TermTaxonomySeeder extends Seeder
         $data = [
             [
                 'term_id' => 1,
+                'term_taxonomy_id' => 1,
                 'taxonomy' => 'product_cat',
+                'description' => 'Category description',
+                'parent' => 0,
+                'count' => 10,
+            ],
+            [
+                'term_id' => 2,
+                'term_taxonomy_id' => 2,
+                'taxonomy' => 'tag',
+                'description' => 'Tag description',
+                'parent' => 0,
+                'count' => 5,
             ],
         ];
 
-        // Using Query Builder
         $this->db->table('term_taxonomy')->insertBatch($data);
     }
 }
