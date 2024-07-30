@@ -18,6 +18,7 @@ class Api extends BaseController
     public function postProductsByCategory(): ResponseInterface
     {
         $post = $this->request->getPost();
+        log_message('debug', 'postProductsByCategory: ' . json_encode($post));
         $output['data'] = $this->adminModel->wp_product_by_category($post['categoryId']);
         $output['status']= true;
         return  $this->respond($output, 200);

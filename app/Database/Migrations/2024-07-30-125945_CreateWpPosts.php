@@ -70,11 +70,11 @@ class CreateWpPosts extends Migration
             ],
         ]);
         $this->forge->addKey('ID', true);
-        $this->forge->createTable('wp_posts');
+        $this->forge->createTable('posts');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_posts');
+        $this->forge->dropTable('posts');
     }
 }

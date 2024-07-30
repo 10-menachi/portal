@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateWpTerms extends Migration
+class CreateWpTblTerm extends Migration
 {
     public function up()
     {
@@ -17,28 +17,21 @@ class CreateWpTerms extends Migration
             ],
             'name' => [
                 'type' => 'VARCHAR',
-                'constraint' => '200',
+                'constraint' => 200,
                 'null' => false,
             ],
             'slug' => [
                 'type' => 'VARCHAR',
-                'constraint' => '200',
+                'constraint' => 200,
                 'null' => false,
-                'unique' => true,
-            ],
-            'term_group' => [
-                'type' => 'BIGINT',
-                'constraint' => 10,
-                'null' => false,
-                'default' => 0,
             ],
         ]);
         $this->forge->addKey('term_id', true);
-        $this->forge->createTable('wp_terms');
+        $this->forge->createTable('terms');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_terms');
+        $this->forge->dropTable('terms');
     }
 }

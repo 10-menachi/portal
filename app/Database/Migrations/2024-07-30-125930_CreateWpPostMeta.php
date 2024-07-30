@@ -34,11 +34,11 @@ class CreateWpTblPostMeta extends Migration
         $this->forge->addKey('meta_id', true);
         $this->forge->addKey('post_id');
         $this->forge->addKey('meta_key');
-        $this->forge->createTable('wp_postmeta');
+        $this->forge->createTable('postmeta');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_postmeta');
+        $this->forge->dropTable('postmeta');
     }
 }

@@ -28,11 +28,11 @@ class CreateWpTermRelationships extends Migration
             ],
         ]);
         $this->forge->addKey(['object_id', 'term_taxonomy_id'], true);
-        $this->forge->createTable('wp_term_relationships');
+        $this->forge->createTable('term_relationships');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_term_relationships');
+        $this->forge->dropTable('term_relationships');
     }
 }
