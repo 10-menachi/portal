@@ -1,9 +1,10 @@
 <?php
 
-use CodeIgniter\I18n\Time;
+use Config\App;
 use Config\Services;
-use CodeIgniter\HTTP\URI;
 use Hashids\Hashids;
+use CodeIgniter\HTTP\URI;
+use CodeIgniter\I18n\Time;
 
 
 function isLogin(){
@@ -34,13 +35,13 @@ function admin_url($uri = '', string $protocol = null): string
     }
 
     // Access the App configuration directly
-    $config = new \Config\App();
+    $config = new App();
     $baseUrl = !empty($config->baseURL) && $config->baseURL !== '/'
         ? rtrim($config->baseURL, '/ ') . '/'
         : $config->baseURL;
 
     // Create a URI object with the base URL
-    $url = new \CodeIgniter\HTTP\URI($baseUrl);
+    $url = new URI($baseUrl);
 
     // Define the panel URL
     $panelUrl = 'admin/';
@@ -53,7 +54,7 @@ function admin_url($uri = '', string $protocol = null): string
     }
 
     // Get the request instance and check if it is secure
-    $request = \Config\Services::request();
+    $request = Services::request();
     if (empty($protocol)) {
         $protocol = $request->isSecure() ? 'https' : 'http';
     }
