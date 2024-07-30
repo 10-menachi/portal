@@ -20,8 +20,25 @@ class CreateWpTblTermTaxonomy extends Migration
                 'constraint' => 200,
                 'null' => false,
             ],
+            'description' => [
+                'type' => 'TEXT',
+                'null' => false,
+            ],
+            'parent' => [
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+                'default' => 0,
+            ],
+            'count' => [
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+                'default' => 0,
+            ],
         ]);
         $this->forge->addKey('term_id', true);
+        $this->forge->addForeignKey('term_id', 'terms', 'term_id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('term_taxonomy');
     }
 
