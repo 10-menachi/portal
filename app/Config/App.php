@@ -112,6 +112,8 @@ class App extends BaseConfig
      */
     public string $appTimezone = 'UTC';
 
+    public $threshold = 4;
+
     /**
      * --------------------------------------------------------------------------
      * Default Character Set
