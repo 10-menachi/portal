@@ -61,11 +61,11 @@ class CreateWpTblProductSales extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('wp_tbl_product_sales');
+        $this->forge->createTable('tbl_product_sales');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_tbl_product_sales');
+        $this->forge->dropTable('tbl_product_sales');
     }
 }
