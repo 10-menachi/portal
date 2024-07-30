@@ -12,14 +12,17 @@ class TermSeeder extends Seeder
             [
                 'term_id' => 1,
                 'name' => 'Desktop POS',
+                'slug' => 'desktop-pos',
             ],
             [
                 'term_id' => 2,
                 'name' => 'Computers',
+                'slug' => 'computers',
             ],
             [
                 'term_id' => 3,
                 'name' => 'Laptops',
+                'slug' => 'laptops',
             ],
         ];
 
