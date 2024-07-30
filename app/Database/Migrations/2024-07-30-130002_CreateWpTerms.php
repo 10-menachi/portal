@@ -34,11 +34,11 @@ class CreateWpTerms extends Migration
             ],
         ]);
         $this->forge->addKey('term_id', true);
-        $this->forge->createTable('wp_terms');
+        $this->forge->createTable('terms');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_terms');
+        $this->forge->dropTable('terms');
     }
 }

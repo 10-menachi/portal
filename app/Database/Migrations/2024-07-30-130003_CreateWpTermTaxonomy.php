@@ -43,11 +43,11 @@ class CreateWpTermTaxonomy extends Migration
             ],
         ]);
         $this->forge->addKey('term_taxonomy_id', true);
-        $this->forge->createTable('wp_term_taxonomy');
+        $this->forge->createTable('term_taxonomy');
     }
 
     public function down()
     {
-        $this->forge->dropTable('wp_term_taxonomy');
+        $this->forge->dropTable('term_taxonomy');
     }
 }
