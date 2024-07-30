@@ -19,6 +19,7 @@ class ProductSalesModel extends Model
         'endDate',
         'qr_code',
         'sku',
+        'isDelete'
     ];
     protected $useTimestamps = true;
     protected $createdField = 'created_at';

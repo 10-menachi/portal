@@ -131,6 +131,7 @@ class AdminModel
         $sql= $this->wp_product_query() ;
         $sql = $sql." AND t.term_id='$categoryId'";
         $query = $this->db->query($sql);
+        log_message('debug', 'sql:'.$sql);
         return $query->getResultArray();
     }
 
