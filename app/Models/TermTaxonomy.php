@@ -14,6 +14,7 @@ class TermTaxonomy extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'term_id',
+        'term_taxonomy_id',
         'taxonomy',
     ];
 

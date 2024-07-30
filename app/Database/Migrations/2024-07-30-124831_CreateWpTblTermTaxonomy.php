@@ -9,6 +9,12 @@ class CreateWpTblTermTaxonomy extends Migration
     public function up()
     {
         $this->forge->addField([
+            'term_taxonomy_id' => [
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+                'unique' => true,
+            ],
             'term_id' => [
                 'type' => 'BIGINT',
                 'constraint' => 20,
@@ -37,7 +43,6 @@ class CreateWpTblTermTaxonomy extends Migration
                 'default' => 0,
             ],
         ]);
-        $this->forge->addKey('term_id', true);
         $this->forge->addForeignKey('term_id', 'terms', 'term_id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('term_taxonomy');
     }
