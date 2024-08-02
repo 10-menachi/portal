@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="mb-1">Product Qr Code</label>
-                                    <input type="text" class="form-control" required="required"
+                                    <input type="text" class="form-control qr-code-input" required="required"
                                         placeholder="Product Qr Code" name="sales[0][qr_code]">
                                 </div>
                                 <div class="col-md-6">
@@ -159,6 +159,14 @@
                 form.find("#sku").val(sku);
             });
 
+            form.find('.qr-code-input').on('input', function() {
+                let qrCodeValue = $(this).val();
+                let lastSlashIndex = qrCodeValue.lastIndexOf('/');
+                if (lastSlashIndex !== -1) {
+                    $(this).val(qrCodeValue.substring(lastSlashIndex + 1));
+                }
+            });
+
             form.parsley({
                 errorClass: 'is-invalid',
                 successClass: 'is-valid',
@@ -189,7 +197,7 @@
                         catSelect.val(categorySelect).trigger('change'); // Trigger change to load products
 
                         // Ensure the QR code field is blank in the new form
-                        newForm.find('[name="sales[0][qr_code]"]').val('').trigger('input');
+                        newForm.find('.qr-code-input').val('').trigger('input');
 
                         // Update form field names to include the index
                         newForm.find('input, select, textarea').each(function() {
