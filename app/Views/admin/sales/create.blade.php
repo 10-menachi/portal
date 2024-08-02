@@ -20,11 +20,11 @@
                 <div class="d-flex align-items-center justify-content-end">
                     <div class="me-2">
                         <a href="{{ admin_url('sales') }}"
-                            class="btn btn-primary waves-effect waves-light submitBtn">Back</a>
+                           class="btn btn-primary waves-effect waves-light submitBtn">Back</a>
                     </div>
                     <div class="me-2">
                         <input type="number" id="duplicateCount" class="form-control" placeholder="Number of Duplicates"
-                            min="1">
+                               min="1">
                     </div>
                     <div>
                         <button class="btn btn-primary waves-effect waves-light" id="duplicateFormBtn">Duplicate</button>
@@ -46,7 +46,7 @@
                                 <div class="col-md-3">
                                     <label class="mb-1">Select Category</label>
                                     <select class="form-control" id="category" name="sales[0][categoryId]"
-                                        required="required">
+                                            required="required">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $cat)
                                             <option value="{{ $cat['term_id'] }}">{{ $cat['name'] }}</option>
@@ -56,29 +56,29 @@
                                 <div class="col-md-3 mb-3">
                                     <label class="mb-1">Select Product</label>
                                     <select class="form-control" id="product" required="required"
-                                        name="sales[0][productId]">
+                                            name="sales[0][productId]">
                                         <option value="">Select Product</option>
                                     </select>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label class="mb-1">Warranty Start Date</label>
                                     <input type="text" class="form-control startDate" placeholder="Warranty Start Date"
-                                        name="sales[0][startDate]" required="required">
+                                           name="sales[0][startDate]" required="required">
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label class="mb-1">Warranty End Date</label>
                                     <input type="text" class="form-control endDate" placeholder="Warranty End Date"
-                                        name="sales[0][endDate]" required="required">
+                                           name="sales[0][endDate]" required="required">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="mb-1">Product Qr Code</label>
                                     <input type="text" class="form-control qr-code-input" required="required"
-                                        placeholder="Product Qr Code" name="sales[0][qr_code]">
+                                           placeholder="Product Qr Code" name="sales[0][qr_code]">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="mb-1">Model Number / Part Number</label>
                                     <input id="sku" type="text" class="form-control" required="required"
-                                        placeholder="Model Number / Part Number" name="sales[0][sku]">
+                                           placeholder="Model Number / Part Number" name="sales[0][sku]">
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label class="mb-1">Additional Description</label>
@@ -191,7 +191,7 @@
                         const newForm = originalForm.clone(true).removeClass('formTemplate');
                         newForm.find('#sku').val(skuValue).trigger('input');
                         newForm.find('#product').val(productSelect).trigger(
-                        'change'); // Preserve selected product
+                            'change'); // Preserve selected product
 
                         const catSelect = newForm.find('#category');
                         catSelect.val(categorySelect).trigger('change'); // Trigger change to load products
