@@ -18,11 +18,22 @@
 
                 <li>
                     <a href="{{ admin_url('sales') }}" class=" waves-effect">
-                        <i class="ti-calendar"></i>
+                        <i class="ti-bolt"></i>
                         <span>Sales</span>
                     </a>
                 </li>
-
+                <li>
+                    <a href="{{ admin_url('products') }}" class=" waves-effect">
+                        <i class="ti-tag"></i>
+                        <span>Product</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ admin_url('categories') }}" class=" waves-effect">
+                        <i class="ti-list"></i>
+                        <span>Category</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->

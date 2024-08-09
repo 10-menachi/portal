@@ -14,7 +14,8 @@
         "codeigniter4/framework": "^4.0",
         "eftec/bladeone": "^4.9",
         "hashids/hashids": "^4.1",
-        "phpoffice/phpspreadsheet": "^1.29"
+        "phpoffice/phpspreadsheet": "^1.29",
+      "ext-json": "*"
     },
     "autoload": {
         "exclude-from-classmap": [

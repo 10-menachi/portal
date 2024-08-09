@@ -35,6 +35,20 @@ class AdminModel
         return  $this->db->table($table)->where('id',$id)->get()->getRowArray();
     }
 
+    public function getCategoryTableDataById($tableName, $id)
+    {
+        if (!$tableName || !$id) {
+            throw new \InvalidArgumentException("Table name and ID must be provided");
+        }
+        // Query the table for the record with the specified term_id
+        $builder = $this->db->table($tableName);
+        $result = $builder->where('term_id', $id)->get()->getRowArray();
+
+        // Return the result as an array
+        return $result;
+    }
+
+
     public function getTableDataByWhere(string $table, $where): ?array
     {
         return  $this->db->table($table)->where($where)->get()->getRowArray();
@@ -44,6 +58,43 @@ class AdminModel
     {
         return  $this->db->table($table)->where($where)->get()->getResultArray();
     }
+
+
+    public function getCategoriesTableResultDataByWhere($tableName, $where = [])
+    {
+        // Ensure the table name is specified
+        if (!$tableName) {
+            throw new \InvalidArgumentException("Table name must be provided");
+        }
+
+        // Start the query builder with the specified table
+        $builder = $this->db->table($tableName);
+
+        // Apply the 'where' conditions
+        if (!empty($where)) {
+            $builder->where($where);
+        }
+
+        // Return the query builder instance for further chaining
+        return $builder;
+    }
+
+
+    public function wp_category_edit_by_id($categoryId)
+    {
+        // Make sure a valid category ID is provided
+        if (!$categoryId) {
+            throw new \InvalidArgumentException("Category ID must be provided");
+        }
+
+        // Fetch the category by ID
+        $builder = $this->db->table('terms');
+        $query = $builder->where('term_id', $categoryId)->get();
+
+        // Return the result as an associative array
+        return $query->getRowArray();
+    }
+
 
     public function updateIntoTable(string $table, array $data, array $whereData): bool
     {
@@ -114,7 +165,6 @@ class AdminModel
             WHERE meta_key in ('_product_version') AND p.post_status in ('publish')";
         return $sql;
     }
-
     public function wp_products(){
         $sql = $this->wp_product_query();
         $query = $this->db->query($sql);
@@ -122,7 +172,8 @@ class AdminModel
     }
 
     public function wp_category(){
-        $sql= "SELECT {$this->preFix}terms.* FROM {$this->preFix}terms  LEFT JOIN {$this->preFix}term_taxonomy   ON {$this->preFix}terms.term_id = {$this->preFix}term_taxonomy.term_id  WHERE {$this->preFix}term_taxonomy.taxonomy = 'product_cat' ";
+        $sql= "SELECT {$this->preFix}terms.* FROM {$this->preFix}terms  LEFT JOIN {$this->preFix}term_taxonomy  
+         ON {$this->preFix}terms.term_id = {$this->preFix}term_taxonomy.term_id  WHERE {$this->preFix}term_taxonomy.taxonomy = 'product_cat' ";
         $query = $this->db->query($sql);
         return $query->getResultArray();
     }
@@ -142,6 +193,15 @@ class AdminModel
         return $query->getRowArray();
     }
 
+    public function wp_product_edit_by_id($productId)
+    {
+        $query = $this->db->table('posts')
+            ->where('id', $productId)
+            ->get();
+        return $query->getRowArray();
+    }
+
+
     public function wp_product_by_sku($sku)
     {
         $post_id=null;
@@ -159,5 +219,18 @@ class AdminModel
         $q= $builder->where(['u.email'=>$email])->get();
         return $q->getRowArray();
     }
+
+
+    public function getProductsTableResultData(string $table = 'posts'): array
+    {
+        return $this->db->table($table)
+            ->select('id, post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, ping_status, post_name') // Corrected the column name and removed duplicates
+            ->where('comment_status', 'closed')
+            ->orWhere('comment_status', 'open') // Correctly combines the conditions using OR
+            ->get()
+            ->getResultArray(); // Return results as an array
+    }
+
+
 
 }
