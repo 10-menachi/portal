@@ -17,6 +17,16 @@ class Sales extends BaseController
 
     public function getIndex()
     {
+
+        // Check if the download was initiated
+        if (session()->has('download_initiated')) {
+            // Clear the session variable
+            session()->remove('download_initiated');
+
+            // Add JavaScript to reload the page
+            echo '<script>window.location.reload();</script>';
+        }
+
         $this->data['products'] = $products = $this->adminModel->getTableResultDataByWhere('tbl_product_sales', ['isDelete' => 0]);
         // var_dump($products);
 

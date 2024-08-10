@@ -48,7 +48,6 @@ class AdminModel
         return $result;
     }
 
-
     public function getTableDataByWhere(string $table, $where): ?array
     {
         return  $this->db->table($table)->where($where)->get()->getRowArray();
@@ -226,11 +225,44 @@ class AdminModel
         return $this->db->table($table)
             ->select('id, post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, ping_status, post_name') // Corrected the column name and removed duplicates
             ->where('comment_status', 'closed')
-            ->orWhere('comment_status', 'open') // Correctly combines the conditions using OR
+            ->orWhere('comment_status', 'open')
+            -> where('id',7648)
             ->get()
             ->getResultArray(); // Return results as an array
     }
+    public function getAlltheSalesfromTable(string $tableName): array
+    {
+        return $this->db->table($tableName)->get()->getResultArray();
+    }
 
 
+    public function getFilteredSalesData(string $table, string $startDate, string $endDate, ?string $productName = null): array
+    {
+        $builder = $this->db->table($table);
+
+        // Apply date range filter
+        $builder->where('startDate >=', $startDate)
+            ->where('endDate <=', $endDate);
+
+        // Apply product name filter if provided
+        if (!empty($productName)) {
+            // Use the LIKE clause to match partial product names
+            $builder->like('name', $productName);
+        }
+
+        return $builder->get()->getResultArray();
+    }
+
+    public function getSalesDataByDateCreated(string $createdAt, ?string $productName = null): array
+    {
+        $builder = $this->db->table('tbl_product_sales')
+            ->where('DATE(created_at)', $createdAt);
+
+        if ($productName) {
+            $builder->like('name', $productName);
+        }
+
+        return $builder->get()->getResultArray();
+    }
 
 }

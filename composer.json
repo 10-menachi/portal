@@ -11,11 +11,11 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-json": "*",
         "codeigniter4/framework": "^4.0",
         "eftec/bladeone": "^4.9",
         "hashids/hashids": "^4.1",
-        "phpoffice/phpspreadsheet": "^1.29",
-      "ext-json": "*"
+        "phpoffice/phpspreadsheet": "^2.2"
     },
     "autoload": {
         "exclude-from-classmap": [

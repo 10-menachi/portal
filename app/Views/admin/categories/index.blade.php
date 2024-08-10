@@ -10,10 +10,10 @@
                         <div class="me-2">
                             <a href="{{ admin_url('excel/download') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn"> Download Format</a>
-                            <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
-                                class="btn btn-primary waves-effect waves-light submitBtn"> Upload Excel</button>
-                            <a href="{{ admin_url('categories/create') }}"
-                                class="btn btn-primary waves-effect waves-light submitBtn"> New Category</a>
+{{--                            <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"--}}
+{{--                                class="btn btn-primary waves-effect waves-light submitBtn"> Upload Excel</button>--}}
+{{--                            <a href="{{ admin_url('categories/create') }}"--}}
+{{--                                class="btn btn-primary waves-effect waves-light submitBtn"> New Category</a>--}}
                         </div>
                     </div>
                 </div>
