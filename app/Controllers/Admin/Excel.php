@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use CodeIgniter\Files\File;
 use CodeIgniter\HTTP\DownloadResponse;
+use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\I18n\Time;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -27,6 +28,9 @@ class Excel extends BaseController
 //        $fileName=  "default-excel-".Time::now()->getTimestamp().".xlsx";
 //        return $this->response->download($path, null)->setFileName($fileName);
 //    }
+    /**
+     * @throws \Exception
+     */
     public function getDownload(): ?DownloadResponse
     {
         // Get the creation date and product name from the request
@@ -42,6 +46,13 @@ class Excel extends BaseController
 
         // Load data from the tbl_product_sales table with the specified filters
         $salesData = $this->adminModel->getSalesDataByDateCreated($createdAt, $productName);
+
+        // Check if sales data exists
+        if (empty($salesData)) {
+            // Set a flash message to notify the user that no data was found
+            session()->setFlashdata('error', 'No sales data found for the given date and product name.');
+
+        }
 
         // Create a new Spreadsheet object
         $spreadsheet = new Spreadsheet();
@@ -80,21 +91,15 @@ class Excel extends BaseController
         $filePath = WRITEPATH . 'uploads/' . "sales-data-" . Time::now()->getTimestamp() . ".xlsx";
         $writer->save($filePath);
 
-
         // Set a session variable to indicate the download was initiated
         session()->set('download_initiated', true);
 
         // Return the download response
-        return $this->response->download($filePath, null)->setFileName(basename($filePath));
+       return $this->response->download($filePath, null)->setFileName(basename($filePath));
     }
-
-
-
 
     public function postUpload()
     {
-        $post = $this->request->getPost();
-
         $validationRule = [
             'file' => [
                 'label' => 'Excel File',
@@ -106,57 +111,68 @@ class Excel extends BaseController
         ];
 
         if (!$this->validate($validationRule)) {
+            // Handle validation errors
             $data = ['errors' => $this->validator->getErrors()];
-            // var_dump($data);
+            session()->setFlashdata('error', $data['errors']);
+            return redirect()->back()->withInput();
         } else {
-
             $file = $this->request->getFile('file');
 
             if ($file->isValid() && !$file->hasMoved()) {
                 $newName = $file->getRandomName();
-                $filepath = "uploads/" . $newName;
+                $filepath = 'uploads/' . $newName;
                 $file->move('uploads', $newName);
-                $data = ['uploaded_fileinfo' => new File($filepath)];
+
+                // Call the method to read and process the Excel file
                 $this->readExcel($filepath);
-                //var_dump($data);
+
+                // Set a success message
+                session()->setFlashdata('success', 'File uploaded and processed successfully.');
+                return redirect()->to('/sales');
             } else {
-                $data = ['errors' => 'The file has already been moved.'];
-                //var_dump($data);
+                // Handle file move error
+                $data = ['errors' => 'The file has already been moved or there was an issue with the upload.'];
+                session()->setFlashdata('error', $data['errors']);
+                return redirect()->back()->withInput();
             }
         }
-
-
     }
 
     /**
+     * Reads and processes the uploaded Excel file.
+     *
+     * @param string $filePath
      * @throws Exception
      */
     public function readExcel($filePath)
     {
-        $inputFileName = $filePath;
-        $inputFileType = IOFactory::identify($inputFileName);
+        $inputFileType = IOFactory::identify($filePath);
         $reader = IOFactory::createReader($inputFileType);
-        $spreadsheet = $reader->load($inputFileName);
+        $spreadsheet = $reader->load($filePath);
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, false);
-        $i = 1;
-        $excelDate = null;
-        //var_dump($sheetData);
-        unset($sheetData[0]);
+        unset($sheetData[0]); // Remove header row
 
         foreach ($sheetData as $item) {
             $product = $this->adminModel->wp_product_by_sku($item[1]);
-            $excelDate[] = array(
+
+            // Prepare data for insertion
+            $excelData = [
                 'qr_code' => $item[0],
                 'sku' => $item[1],
                 'startDate' => $item[2],
                 'endDate' => $item[3],
                 'description' => $item[4],
-                'product_id' => ($product != null) ? $product['post_id'] : null,
-            );
+                'product_id' => $product['post_id'] ?? null,
+            ];
+
+            // Insert or update the data in the database
+            $this->adminModel->insertOrUpdateSalesData($excelData);
         }
 
-        //  var_dump($excelDate);
+        // Optional: Delete the file after processing
+        unlink($filePath);
     }
+
 
 }

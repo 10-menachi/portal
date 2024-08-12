@@ -3,13 +3,24 @@
 namespace App\Models;
 
 use CodeIgniter\Database\ConnectionInterface;
-use stdClass;
 
 class AdminModel
 {
     protected $db;
     public string $userTable = 'tbl_user';
     private  string $wp_postMeta="postmeta";
+
+    protected $table = 'tbl_product_sales';
+    protected $primaryKey = 'id';
+
+    protected $allowedFields = [
+        'qr_code',
+        'sku',
+        'startDate',
+        'endDate',
+        'description',
+        'product_id'
+    ];
 
     private string $preFix="wp";
 
@@ -265,4 +276,70 @@ class AdminModel
         return $builder->get()->getResultArray();
     }
 
-}
+    
+    public function asArray()
+    {
+        return $this;
+    }
+    // Method to get a record based on a condition protected $db;
+   
+    // Method to find a record by column and value
+    public function where($column, $value)
+    {
+        $builder = $this->db->table($this->table);
+        $record = $builder->where($column, $value)->get()->getRowArray();
+
+        // Debugging: Log or print the type and value of $record
+        log_message('debug', 'where method result: ' . print_r($record, true));
+
+        // Return the result as an array if it exists, otherwise return null
+        return is_array($record) ? $record : null;
+    }
+
+    // Method to update an existing record
+    public function updateRecord($id, array $data)
+    {
+        return $this->db->table($this->table)->where($this->primaryKey, $id)->update($data);
+    }
+
+    // Method to insert a new record
+    public function insertRecord(array $data)
+    {
+        $this->db->table($this->table)->insert($data);
+        return $this->db->insertID();
+    }
+
+    // Method to insert or update sales data
+    public function insertOrUpdateSalesData(array $salesData)
+    {
+        foreach ($salesData as $data) {
+            // Check if a record with the same SKU already exists
+            $existingRecord = $this->where('sku', $data['sku']);
+
+            // Debugging: Log or print the type and value of $existingRecord
+            log_message('debug', 'Existing record: ' . print_r($existingRecord, true));
+
+            if ($existingRecord) {
+                // Update the existing record
+                $this->updateRecord($existingRecord['id'], [
+                    'qr_code' => $data['qr_code'],
+                    'startDate' => $data['startDate'],
+                    'endDate' => $data['endDate'],
+                    'description' => $data['description'],
+                    'product_id' => $data['product_id'],
+                ]);
+            } else {
+                // Insert a new record
+                $this->insertRecord([
+                    'qr_code' => $data['qr_code'],
+                    'sku' => $data['sku'],
+                    'startDate' => $data['startDate'],
+                    'endDate' => $data['endDate'],
+                    'description' => $data['description'],
+                    'product_id' => $data['product_id'],
+                ]);
+            }
+        }
+    }
+
+} 

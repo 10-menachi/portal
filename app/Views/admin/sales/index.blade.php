@@ -6,7 +6,7 @@
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0 font-size-18">Sales Product List</h4>
                 <div class="#">
-                    {{--                                <a href="{{ admin_url('excel/download') }}"  class="btn btn-primary waves-effect waves-light submitBtn"> Download Format</a> --}}
+                    {{--<a href="{{ admin_url('excel/download') }}"  class="btn btn-primary waves-effect waves-light submitBtn"> Download Format</a> --}}
                     <form action="{{ admin_url('excel/download') }}" class="m-5" method="GET">
                         <div class="row">
                             <div class="col-md-6">
