@@ -30,8 +30,8 @@
                     <div class="d-flex">
                         <div class="me-2">
                             <span class="m-2"></span>
-                            <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
-                                class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</button>
+                            {{-- <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
+                                class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</button> --}}
 
                             <a href="{{ admin_url('sales/create') }}"
                                 class="btn btn-primary waves-effect waves-light submitBtn">New Sales</a>

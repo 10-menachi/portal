@@ -188,7 +188,8 @@ class AdminModel
     public function wp_category()
     {
         $sql = "SELECT {$this->preFix}terms.* FROM {$this->preFix}terms  LEFT JOIN {$this->preFix}term_taxonomy  
-         ON {$this->preFix}terms.term_id = {$this->preFix}term_taxonomy.term_id  WHERE {$this->preFix}term_taxonomy.taxonomy = 'product_cat' ";
+         ON {$this->preFix}terms.term_id = {$this->preFix}term_taxonomy.term_id  WHERE
+                                               {$this->preFix}term_taxonomy.taxonomy = 'product_cat' ";
         $query = $this->db->query($sql);
         return $query->getResultArray();
     }
@@ -222,7 +223,8 @@ class AdminModel
     public function wp_product_by_sku($sku)
     {
         $post_id = null;
-        $builder = $this->db->table($this->preFix . $this->wp_postMeta)->where(['meta_key' => '_sku', 'meta_value' => $sku]);
+        $builder = $this->db->table($this->preFix . $this->wp_postMeta)->
+        where(['meta_key' => '_sku', 'meta_value' => $sku]);
         $row = $builder->get()->getRowArray();
         if ($row) {
             $post_id = $row['post_id'];
@@ -343,6 +345,35 @@ class AdminModel
                 'description' => $salesData['description'],
                 'product_id' => $salesData['product_id'],
             ]);
+
+
         }
+        }
+
+
+
+    public function countAllRecords(string $tableName): int
+    {
+        // Initialize the Query Builder for the specified table
+        $builder = $this->db->table($tableName);
+
+        // Count all records in the table
+        return $builder->countAllResults();
+    }
+
+
+    public function countProductSalesRecords(): int
+    {
+        return $this->db->table('tbl_product_sales')->countAllResults();
+    }
+
+    /**
+     * Counts all category records.
+     *
+     * @return int The total number of categories.
+     */
+    public function countproductsCategoriesRecords(): int
+    {
+        return $this->db->table('terms')->countAllResults();
     }
 }

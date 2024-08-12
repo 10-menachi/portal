@@ -34,7 +34,7 @@ class Products extends BaseController
 
         // Render the view with the data
         return $this->blade->run('admin.products.index', $this->data);
-//        return redirect()->to(admin_url('products'))->with('systemMessage', $message);
+      //return redirect()->to(admin_url('products'))->with('systemMessage', $message);
     }
 
 
