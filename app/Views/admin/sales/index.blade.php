@@ -6,7 +6,6 @@
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0 font-size-18">Sales Product List</h4>
                 <div class="#">
-                    {{--<a href="{{ admin_url('excel/download') }}"  class="btn btn-primary waves-effect waves-light submitBtn"> Download Format</a> --}}
                     <form action="{{ admin_url('excel/download') }}" class="m-5" method="GET">
                         <div class="row">
                             <div class="col-md-6">
@@ -21,9 +20,8 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <button type="submit"  class="btn btn-primary waves-effect waves-light submitBtn">Download
-                                    Sales
-                                    Data</button>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light submitBtn">Download
+                                    Sales Data</button>
                             </div>
                         </div>
                     </form>
@@ -33,10 +31,10 @@
                         <div class="me-2">
                             <span class="m-2"></span>
                             <button data-bs-toggle="modal" data-bs-target=".bs-upload-excel" type="button"
-                                class="btn btn-primary waves-effect waves-light submitBtn"> Upload Excel</button>
+                                class="btn btn-primary waves-effect waves-light submitBtn">Upload Excel</button>
 
                             <a href="{{ admin_url('sales/create') }}"
-                                class="btn btn-primary waves-effect waves-light submitBtn"> New Sales</a>
+                                class="btn btn-primary waves-effect waves-light submitBtn">New Sales</a>
                         </div>
                     </div>
                 </div>
@@ -60,7 +58,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $i=1 @endphp
+                                @php $i = 1 @endphp
                                 @foreach ($products as $item)
                                     <tr>
                                         <td>{{ $i++ }}</td>
@@ -72,9 +70,9 @@
                                         <td>{{ $item['endDate'] }}</td>
                                         <td style="width: 150px">
                                             <a href="{{ admin_url('sales/edit/' . $item['id']) }}"
-                                                class="btn btn-sm btn-primary"> Edit </a>
+                                                class="btn btn-sm btn-primary">Edit</a>
                                             <a href="{{ admin_url('sales/detail/' . $item['id']) }}"
-                                                class="btn btn-sm btn-success"> Detail </a>
+                                                class="btn btn-sm btn-success">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -90,27 +88,52 @@
     <div class="modal fade bs-upload-excel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content ">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Choose Excel </h5>
+                    <h5 class="modal-title">Choose Excel</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="min-height: 200px">
                     <?= form_open_multipart(admin_url('excel/upload'), []) ?>
                     <input required="required" type="file" name="file" class="form-control mb-3">
-                    <button class="btn btn-primary w-100" type="submit"> Upload File</button>
+                    <button class="btn btn-primary w-100" type="submit">Upload File</button>
                     <?= form_close() ?>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     <script>
         let dataTable = $("#dataTable");
         $(dataTable).dataTable();
+
+        // Initialize toastr (or any other toast library you're using)
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        // Show a toast notification if there is an error flash message
+        @if (session()->get('error'))
+            toastr.error("{{ session()->get('error') }}");
+        @endif
     </script>
 @endsection

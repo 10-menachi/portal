@@ -23,15 +23,15 @@ class Excel extends BaseController
     }
 
     //    public function getDownload(): ?DownloadResponse
-//    {
-//        $path ="uploads/default-excel.xlsx";
-//        $fileName=  "default-excel-".Time::now()->getTimestamp().".xlsx";
-//        return $this->response->download($path, null)->setFileName($fileName);
-//    }
+    //    {
+    //        $path ="uploads/default-excel.xlsx";
+    //        $fileName=  "default-excel-".Time::now()->getTimestamp().".xlsx";
+    //        return $this->response->download($path, null)->setFileName($fileName);
+    //    }
     /**
      * @throws \Exception
      */
-    public function getDownload(): ?DownloadResponse
+    public function getDownload()
     {
         // Get the creation date and product name from the request
         $createdAt = $this->request->getGet('createdAt');
@@ -52,6 +52,8 @@ class Excel extends BaseController
             // Set a flash message to notify the user that no data was found
             session()->setFlashdata('error', 'No sales data found for the given date and product name.');
 
+            // Redirect back to the previous page
+            return redirect()->to(previous_url());
         }
 
         // Create a new Spreadsheet object
@@ -95,8 +97,9 @@ class Excel extends BaseController
         session()->set('download_initiated', true);
 
         // Return the download response
-       return $this->response->download($filePath, null)->setFileName(basename($filePath));
+        return $this->response->download($filePath, null)->setFileName(basename($filePath));
     }
+
 
     public function postUpload()
     {
@@ -128,7 +131,7 @@ class Excel extends BaseController
 
                 // Set a success message
                 session()->setFlashdata('success', 'File uploaded and processed successfully.');
-                return redirect()->to('/sales');
+                return redirect()->to('/admin/sales');
             } else {
                 // Handle file move error
                 $data = ['errors' => 'The file has already been moved or there was an issue with the upload.'];
@@ -173,6 +176,4 @@ class Excel extends BaseController
         // Optional: Delete the file after processing
         unlink($filePath);
     }
-
-
 }
